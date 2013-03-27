@@ -32,7 +32,6 @@ describe "A command should be serializeable" do
 
     class << self
       def construct(serialized_command)
-        # We are calling them on the instance while we should call them on the class
         instance_eval(serialized_command)
       end
     end

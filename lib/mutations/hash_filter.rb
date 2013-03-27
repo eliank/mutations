@@ -171,29 +171,17 @@ module Mutations
     end
 
     def to_s(name=nil)
-      if name
-        %(
-          hash :#{name} do
-            required do
-              #{filters_to_s(required_inputs)}
-            end
+      %(
+        #{"hash :#{name} do "if name}
+        required do
+          #{filters_to_s(required_inputs)}
+        end
 
-            optional do
-              #{filters_to_s(optional_inputs)}
-            end
-          end
-        )
-      else
-        %(
-          required do
-            #{filters_to_s(required_inputs)}
-          end
-
-          optional do
-            #{filters_to_s(optional_inputs)}
-          end
-        )
-      end
+        optional do
+          #{filters_to_s(optional_inputs)}
+        end
+        #{"end" if name}
+      )
    end
 
    def filters_to_s(filters)
