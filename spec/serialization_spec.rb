@@ -28,8 +28,26 @@ describe "A command should be serializeable" do
 
   end
 
+  class EmptyCommand < Mutations::Command
+
+    class << self
+      def construct(serialized_command)
+        # We are calling them on the instance while we should call them on the class
+        instance_eval(serialized_command)
+      end
+    end
+
+    def execute
+      puts "Name: #{@inputs[:first_name]}"
+    end
+
+  end
+
   it "Should print the code required to reconstruct itself" do
-    puts SerializeableCommand.new().to_s
+    serialized_command = SerializeableCommand.new().to_s
+
+    EmptyCommand.construct(serialized_command)
+    EmptyCommand.run!(:first_name => "John")
   end
 
 end

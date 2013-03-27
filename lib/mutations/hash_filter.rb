@@ -172,7 +172,6 @@ module Mutations
 
     def to_s(name=nil)
       if name
-        puts "NAME: #{name}"
         %(
           hash :#{name} do
             required do
