@@ -12,7 +12,6 @@ module Mutations
       end
 
       def required(&block)
-        puts "Reqqed #{@current_filters}"
         @current_filters.send(:required, &block)
       end
 
@@ -44,14 +43,26 @@ module Mutations
       end
 
       def output_filters
-        @input_filters ||= begin
+        @output_filters ||= begin
           if Command == self.superclass
             HashFilter.new
           else
-            self.superclass.input_filters.dup
+            self.superclass.output_filters.dup
           end
         end
       end
+    end
+
+    def to_s
+      %(
+        input do
+          #{input_filters.to_s}
+        end
+
+        output do
+          #{output_filters.to_s}
+        end
+      )
     end
 
     # Instance methods
@@ -69,7 +80,7 @@ module Mutations
     end
 
     def output_filters
-      self.class.input_filters
+      self.class.output_filters
     end
 
     def has_errors?
@@ -127,6 +138,5 @@ module Mutations
       @errors ||= ErrorHash.new
       @errors.merge!(hash)
     end
-
   end
 end

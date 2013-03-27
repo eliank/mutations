@@ -34,5 +34,11 @@ module Mutations
     def discard_empty?
       options[:discard_empty]
     end
+
+    def to_s(name="")
+      date_type = self.class.name[/^Mutations::([a-zA-Z]*)Filter$/, 1].downcase
+      # data_type = self.class.name.gsub(Mutations::THISFilter, '')  #=> "h{e}ll{o}"
+      "#{date_type} :#{name}, #{self.options}"
+    end
   end
 end

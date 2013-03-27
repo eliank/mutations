@@ -169,5 +169,43 @@ module Mutations
         [filtered_data, nil]     # We win, it's valid!
       end
     end
-  end
+
+    def to_s(name=nil)
+      if name
+        puts "NAME: #{name}"
+        %(
+          hash :#{name} do
+            required do
+              #{filters_to_s(required_inputs)}
+            end
+
+            optional do
+              #{filters_to_s(optional_inputs)}
+            end
+          end
+        )
+      else
+        %(
+          required do
+            #{filters_to_s(required_inputs)}
+          end
+
+          optional do
+            #{filters_to_s(optional_inputs)}
+          end
+        )
+      end
+   end
+
+   def filters_to_s(filters)
+      serialized_filter = ""
+
+      for filter_name in filters.keys
+        filter = filters[filter_name]
+        serialized_filter += "#{filter.to_s(filter_name)}\n"
+      end
+
+      serialized_filter
+   end
+ end
 end

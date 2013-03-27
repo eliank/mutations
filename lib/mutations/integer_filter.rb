@@ -33,5 +33,9 @@ module Mutations
       # We win, it's valid!
       [data, nil]
     end
+
+    def type_s
+      "integer"
+    end
   end
 end
