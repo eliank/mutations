@@ -1,5 +1,5 @@
 module Mutations
-  class ArrayFilter < InputFilter
+  class ArrayFilter < Filter
     @default_options = {
       nils: false,            # true allows an explicit nil to be valid. Overrides any other options
       class: nil,             # A constant or string indicates that each element of the array needs to be one of these classes

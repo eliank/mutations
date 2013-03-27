@@ -1,5 +1,5 @@
 module Mutations
-  class IntegerFilter < InputFilter
+  class IntegerFilter < Filter
     @default_options = {
       nils: false,       # true allows an explicit nil to be valid. Overrides any other options
       min: nil,          # lowest value, inclusive

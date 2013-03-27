@@ -1,5 +1,5 @@
 module Mutations
-  class InputFilter
+  class Filter
     @default_options = {}
 
     def self.default_options
