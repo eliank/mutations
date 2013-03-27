@@ -1,12 +1,13 @@
 class SimpleCommand < Mutations::Command
+  input do
+    required do
+      string :name, max_length: 10
+      string :email
+    end
 
-  required do
-    string :name, max_length: 10
-    string :email
-  end
-
-  optional do
-    integer :amount
+    optional do
+      integer :amount
+    end
   end
 
   def execute

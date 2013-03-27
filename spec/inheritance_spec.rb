@@ -4,11 +4,12 @@ require 'simple_command'
 describe 'Mutations - inheritance' do
 
   class SimpleInherited < SimpleCommand
-
-    required do
-      integer :age
+    input do
+      required do
+        integer :age
+      end
     end
-
+    
     def execute
       inputs
     end

@@ -3,20 +3,22 @@ require_relative 'spec_helper'
 describe "Mutations - errors" do
 
   class GivesErrors < Mutations::Command
-    required do
-      string :str1
-      string :str2, :in => %w(opt1 opt2 opt3)
-    end
-
-    optional do
-      integer :int1
-      hash :hash1 do
-        boolean :bool1
-        boolean :bool2
+    input do
+      required do
+        string :str1
+        string :str2, :in => %w(opt1 opt2 opt3)
       end
-      array :arr1 do integer end
-    end
 
+      optional do
+        integer :int1
+        hash :hash1 do
+          boolean :bool1
+          boolean :bool2
+        end
+        array :arr1 do integer end
+      end
+    end
+  
     def execute
       inputs
     end

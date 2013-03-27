@@ -90,12 +90,13 @@ describe "Command" do
 
   describe "EigenCommand" do
     class EigenCommand < Mutations::Command
-
-      required { string :name }
-      optional { string :email }
+      input do
+        required { string :name }
+        optional { string :email }
+      end
 
       def execute
-        {name: name, email: email}
+        {name: @inputs[:name], email: @inputs[:email]}
       end
     end
 
@@ -105,29 +106,12 @@ describe "Command" do
     end
   end
 
-  describe "MutatatedCommand" do
-    class MutatatedCommand < Mutations::Command
-
-      required { string :name }
-      optional { string :email }
-
-      def execute
-        self.name, self.email = "bob", "bob@jones.com"
-        {name: inputs[:name], email: inputs[:email]}
-      end
-    end
-
-    it "should define setter methods on params" do
-      mutation = MutatatedCommand.run(name: "John", email: "john@gmail.com")
-      assert_equal ({name: "bob", email: "bob@jones.com"}), mutation.result
-    end
-  end
-
   describe "ErrorfulCommand" do
     class ErrorfulCommand < Mutations::Command
-
-      required { string :name }
-      optional { string :email }
+      input do
+        required { string :name }
+        optional { string :email }
+      end
 
       def execute
         add_error("bob", :is_a_bob)
@@ -147,9 +131,10 @@ describe "Command" do
 
   describe "MultiErrorCommand" do
     class ErrorfulCommand < Mutations::Command
-
-      required { string :name }
-      optional { string :email }
+      input do
+        required { string :name }
+        optional { string :email }
+      end
 
       def execute
         moar_errors = Mutations::ErrorHash.new
@@ -172,40 +157,12 @@ describe "Command" do
     end
   end
 
-  describe "PresentCommand" do
-    class PresentCommand < Mutations::Command
-
-      optional do
-        string :email
-        string :name
-      end
-
-      def execute
-        if name_present? && email_present?
-          1
-        elsif !name_present? && email_present?
-          2
-        elsif name_present? && !email_present?
-          3
-        else
-          4
-        end
-      end
-    end
-
-    it "should handle *_present? methods" do
-      assert_equal 1, PresentCommand.run!(name: "John", email: "john@gmail.com")
-      assert_equal 2, PresentCommand.run!(email: "john@gmail.com")
-      assert_equal 3, PresentCommand.run!(name: "John")
-      assert_equal 4, PresentCommand.run!
-    end
-  end
-
   describe "RawInputsCommand" do
     class RawInputsCommand < Mutations::Command
-
-      required do
-        string :name
+      input do
+        required do
+          string :name
+        end
       end
 
       def execute

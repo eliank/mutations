@@ -4,10 +4,12 @@ require 'simple_command'
 describe 'Mutations - defaults' do
 
   class DefaultCommand < Mutations::Command
-    required do
-      string :name, default: "Bob Jones"
+    input do
+      required do
+        string :name, default: "Bob Jones"
+      end
     end
-    
+      
     def execute
       inputs
     end

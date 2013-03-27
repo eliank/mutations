@@ -1,31 +1,23 @@
 module Mutations
   class Command
     class << self
-      def create_attr_methods(meth, &block)
-        self.input_filters.send(meth, &block)
-        keys = self.input_filters.send("#{meth}_keys")
-        keys.each do |key|
-          define_method(key) do
-            @inputs[key]
-          end
-
-          define_method("#{key}_present?") do
-            @inputs.has_key?(key)
-          end
-
-          define_method("#{key}=") do |v|
-            @inputs[key] = v
-          end
-        end
+      def input(&block)
+        @current_filters = self.input_filters
+        instance_eval(&block)
       end
-      private :create_attr_methods
+
+      def output(&block)
+        @current_filters = self.output_filters
+        instance_eval(&block)
+      end
 
       def required(&block)
-        create_attr_methods(:required, &block)
+        puts "Reqqed #{@current_filters}"
+        @current_filters.send(:required, &block)
       end
 
       def optional(&block)
-        create_attr_methods(:optional, &block)
+        @current_filters.send(:optional, &block)
       end
 
       def run(*args)
@@ -51,6 +43,15 @@ module Mutations
         end
       end
 
+      def output_filters
+        @input_filters ||= begin
+          if Command == self.superclass
+            HashFilter.new
+          else
+            self.superclass.input_filters.dup
+          end
+        end
+      end
     end
 
     # Instance methods
@@ -64,6 +65,10 @@ module Mutations
     end
 
     def input_filters
+      self.class.input_filters
+    end
+
+    def output_filters
       self.class.input_filters
     end
 
