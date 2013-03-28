@@ -4,7 +4,7 @@ module Mutations
       def construct(serialized_command)
         instance_eval(serialized_command)
       end
-      
+
       def input(&block)
         @current_filters = self.input_filters
         instance_eval(&block)
@@ -34,6 +34,10 @@ module Mutations
       # Validates input, but doesn't call execute. Returns an Outcome with errors anyway.
       def validate(*args)
         new(*args).validate
+      end
+
+      def validate!(*args)
+        new(*args).validate!
       end
 
       def input_filters
@@ -107,6 +111,15 @@ module Mutations
 
     def validate
       validation_outcome
+    end
+
+    def validate!
+      outcome = validate
+      if outcome.success?
+        outcome.result
+      else
+        raise ValidationException.new(outcome.errors)
+      end
     end
 
     def validation_outcome(result = nil)
