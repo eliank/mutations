@@ -1,6 +1,10 @@
 module Mutations
   class Command
     class << self
+      def construct(serialized_command)
+        instance_eval(serialized_command)
+      end
+      
       def input(&block)
         @current_filters = self.input_filters
         instance_eval(&block)
