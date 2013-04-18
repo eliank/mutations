@@ -73,6 +73,13 @@ module Mutations
       )
     end
 
+    def to_hash
+      {
+        :input => input_filters.to_hash,
+        :output => output_filters.to_hash
+      }
+    end
+
     # Instance methods
     def initialize(*args)
       @raw_inputs = args.each_with_object({}.with_indifferent_access) do |arg, h|

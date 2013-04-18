@@ -182,9 +182,9 @@ module Mutations
         end
         #{"end" if name}
       )
-   end
+    end
 
-   def filters_to_s(filters)
+    def filters_to_s(filters)
       serialized_filter = ""
 
       for filter_name in filters.keys
@@ -193,6 +193,24 @@ module Mutations
       end
 
       serialized_filter
-   end
- end
+    end
+
+    def to_hash
+      {
+        :required => filter_to_hash(required_inputs),
+        :optional => filter_to_hash(optional_inputs)
+      }
+    end
+
+    def filter_to_hash(filters)
+      filter_hash = Hash.new
+
+      for filter_name in filters.keys
+        filter = filters[filter_name]
+        filter_hash[filter_name] = filter.to_hash
+      end
+
+      filter_hash
+    end
+  end
 end

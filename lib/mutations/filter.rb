@@ -35,10 +35,16 @@ module Mutations
       options[:discard_empty]
     end
 
+    def data_type
+      self.class.name[/^Mutations::([a-zA-Z]*)Filter$/, 1].downcase
+    end
+
     def to_s(name="")
-      date_type = self.class.name[/^Mutations::([a-zA-Z]*)Filter$/, 1].downcase
-      # data_type = self.class.name.gsub(Mutations::THISFilter, '')  #=> "h{e}ll{o}"
-      "#{date_type} :#{name}, #{self.options}"
+      "#{data_type} :#{name}, #{self.options}"
+    end
+
+    def to_hash()
+      {:type => data_type, :options => options}
     end
   end
 end
