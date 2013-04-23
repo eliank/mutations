@@ -173,4 +173,28 @@ describe "Mutations::ArrayFilter" do
     assert_equal ["Array[2] isn't a string", "Array[0] can't be blank"], errors.message_list
   end
 
+  it "should handle in clauses" do
+    in_hash = { 4 => "peer", 5 => "appel", 6 => "kiwi" }
+    f = Mutations::ArrayFilter.new(:arr, class: Integer, in: in_hash)
+    assert_equal in_hash, f.to_hash[:options][:in]
+
+    filtered, errors = f.filter([4])
+    assert_equal nil, errors
+
+    filtered, errors = f.filter([5])
+    assert_equal nil, errors
+
+    filtered, errors = f.filter([6])
+    assert_equal nil, errors
+
+    filtered, errors = f.filter([4, 5, 6])
+    assert_equal nil, errors
+
+    filtered, errors = f.filter([3]) # Invalid
+    assert_equal :in, errors
+
+    filtered, errors = f.filter([3, 4]) # Partially invalid
+    assert_equal :in, errors
+  end
+
 end

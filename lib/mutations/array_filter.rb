@@ -3,7 +3,8 @@ module Mutations
     @default_options = {
       nils: false,            # true allows an explicit nil to be valid. Overrides any other options
       class: nil,             # A constant or string indicates that each element of the array needs to be one of these classes
-      arrayize: false         # true will convert "hi" to ["hi"]. "" converts to []
+      arrayize: false,         # true will convert "hi" to ["hi"]. "" converts to []
+      in: nil
     }
 
     def initialize(name, opts = {}, &block)
@@ -83,6 +84,11 @@ module Mutations
           end
         end
 
+        if options[:in]
+          for key in data
+            return [data, :in] unless options[:in].has_key?(key)
+          end
+        end
         if found_error
           [data, errors]
         else

@@ -67,7 +67,7 @@ integer :phone, {:nils=>false, :min=>nil, :max=>nil, :in=>nil}
         end
         end
       
-array :friend_names, {:nils=>false, :class=>String, :arrayize=>false}
+array :friend_names, {:nils=>false, :class=>String, :arrayize=>false, :in=>nil}
 
         end
         
