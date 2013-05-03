@@ -86,7 +86,7 @@ module Mutations
 
         if options[:in]
           for key in data
-            return [data, :in] unless options[:in].has_key?(key)
+            return [data, :in] unless options[:in].include?(key)
           end
         end
         if found_error
