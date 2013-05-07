@@ -1,7 +1,7 @@
 class SimpleCommand < Mutations::Command
   input do
     required do
-      string :name, max_length: 10
+      string :name, :max_length => 10
       string :email
     end
 
