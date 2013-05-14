@@ -6,6 +6,9 @@ describe "A command should be serializeable" do
     input do
       required do
         string :first_name
+      end
+
+      optional do
         integer :social_security_number
       end
     end
@@ -34,12 +37,12 @@ describe "A command should be serializeable" do
         
         required do
           string :first_name, {:strip=>true, :strict=>false, :nils=>false, :empty=>false, :min_length=>nil, :max_length=>nil, :matches=>nil, :in=>nil, :discard_empty=>false}
-integer :social_security_number, {:nils=>false, :min=>nil, :max=>nil, :in=>nil}
 
         end
 
         optional do
-          
+          integer :social_security_number, {:nils=>false, :min=>nil, :max=>nil, :in=>nil}
+
         end
         
       
@@ -90,14 +93,18 @@ array :friend_names, {:nils=>false, :class=>String, :arrayize=>false, :in=>nil}
 
     EmptyCommand.construct(serialized_command)
     assert_raises Mutations::ValidationException do
-      EmptyCommand.run!(:first_name => "John")
-    end
-
-    assert_raises Mutations::ValidationException do
       EmptyCommand.run!(:social_security_number => 1234)
     end
 
     EmptyCommand.run!(:first_name => "John", :social_security_number => 1234)
+  end
+
+  it "Should generate a hash" do
+    input_hash_representation = SerializeableCommand.input_filters.to_hash
+    output_hash_representation = SerializeableCommand.output_filters.to_hash
+
+    assert_equal true, input_hash_representation[:first_name][:required]
+    assert_equal false, input_hash_representation[:social_security_number][:required]
   end
 
 end

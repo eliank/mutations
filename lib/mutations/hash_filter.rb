@@ -200,21 +200,21 @@ module Mutations
     end
 
     def to_hash
-      {
-        :required => filter_to_hash(required_inputs),
-        :optional => filter_to_hash(optional_inputs)
-      }
-    end
-
-    def filter_to_hash(filters)
-      filter_hash = Hash.new
-
-      for filter_name in filters.keys
-        filter = filters[filter_name]
-        filter_hash[filter_name] = filter.to_hash
+      hash_representation = Hash.new
+# This alters the actually state. Just alter it afterwards
+      for filter_name in required_inputs.keys
+        filter = required_inputs[filter_name]
+        hash_representation[filter_name] = filter.to_hash
+        hash_representation[filter_name][:required] = true
       end
 
-      filter_hash
+      for filter_name in optional_inputs.keys
+        filter = optional_inputs[filter_name]
+        hash_representation[filter_name] = filter.to_hash
+        hash_representation[filter_name][:required] = false
+      end
+
+      hash_representation
     end
   end
 end
