@@ -103,8 +103,13 @@ array :friend_names, {:nils=>false, :class=>String, :arrayize=>false, :in=>nil}
     input_hash_representation = SerializeableCommand.input_filters.to_hash
     output_hash_representation = SerializeableCommand.output_filters.to_hash
 
-    assert_equal true, input_hash_representation[:first_name][:required]
-    assert_equal false, input_hash_representation[:social_security_number][:required]
+    assert_equal true, input_hash_representation[:first_name][:options][:required]
+    assert_equal false, input_hash_representation[:social_security_number][:options][:required]
+
+    assert_equal false, output_hash_representation[:age][:options][:required]
+    assert_equal false, output_hash_representation[:numbers][:options][:required]
+    assert_equal true, output_hash_representation[:numbers][:credit_card][:options][:required]
+    assert_equal true, output_hash_representation[:numbers][:phone][:options][:required]
   end
 
 end

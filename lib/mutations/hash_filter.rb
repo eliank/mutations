@@ -200,18 +200,18 @@ module Mutations
     end
 
     def to_hash
-      hash_representation = Hash.new
-# This alters the actually state. Just alter it afterwards
+      hash_representation = super.to_hash
+
       for filter_name in required_inputs.keys
         filter = required_inputs[filter_name]
         hash_representation[filter_name] = filter.to_hash
-        hash_representation[filter_name][:required] = true
+        hash_representation[filter_name][:options][:required] = true
       end
 
       for filter_name in optional_inputs.keys
         filter = optional_inputs[filter_name]
         hash_representation[filter_name] = filter.to_hash
-        hash_representation[filter_name][:required] = false
+        hash_representation[filter_name][:options][:required] = false
       end
 
       hash_representation

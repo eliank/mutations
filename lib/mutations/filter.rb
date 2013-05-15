@@ -44,7 +44,13 @@ module Mutations
     end
 
     def to_hash()
-      {:type => data_type, :options => options}
+      explicit_options = self.options.clone
+      explicit_options.delete_if do |key, value|
+        if self.class.default_options.has_key?(key)
+          value == self.class.default_options[key]
+        end
+      end
+      {:type => data_type, :options => explicit_options}
     end
   end
 end
