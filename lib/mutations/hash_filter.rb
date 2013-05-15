@@ -199,18 +199,22 @@ module Mutations
       serialized_filter
     end
 
-    def to_hash
-      hash_representation = super.to_hash
+    def to_hash(has_ancestor = false)
+      if has_ancestor
+        hash_representation = super.to_hash
+      else
+        hash_representation = Hash.new
+      end
 
       for filter_name in required_inputs.keys
         filter = required_inputs[filter_name]
-        hash_representation[filter_name] = filter.to_hash
+        hash_representation[filter_name] = filter.to_hash(true)
         hash_representation[filter_name][:options][:required] = true
       end
 
       for filter_name in optional_inputs.keys
         filter = optional_inputs[filter_name]
-        hash_representation[filter_name] = filter.to_hash
+        hash_representation[filter_name] = filter.to_hash(true)
         hash_representation[filter_name][:options][:required] = false
       end
 

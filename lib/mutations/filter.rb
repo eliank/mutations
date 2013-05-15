@@ -43,7 +43,7 @@ module Mutations
       "#{data_type} :#{name}, #{self.options}"
     end
 
-    def to_hash()
+    def to_hash(has_ancestor = false)
       explicit_options = self.options.clone
       explicit_options.delete_if do |key, value|
         if self.class.default_options.has_key?(key)
